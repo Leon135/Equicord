@@ -74,7 +74,8 @@ export default definePlugin({
       replacement: {
         match: /(?<=\.profile\?\.badge.{0,50}\i\)\{)/,
         replace: "return false;"
-      }
+      },
+      predicate: () => settings.store.clanTag,
     }
   ]
 });
