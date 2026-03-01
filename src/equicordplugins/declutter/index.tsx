@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { isPluginEnabled } from "@api/PluginManager";
 import { definePluginSettings, migratePluginSetting, migratePluginSettings } from "@api/Settings";
 import { Devs, EquicordDevs } from "@utils/index";
 import definePlugin, { OptionType } from "@utils/types";
@@ -71,16 +70,15 @@ export const settings = definePluginSettings({
     },
     removeShopAboveDM: {
         type: OptionType.BOOLEAN,
-        description: "Remove shops above DMs list",
+        description: "Remove shops above DMs list.",
         default: true,
         restartNeeded: true,
     },
     removeQuestsAboveDM: {
         type: OptionType.BOOLEAN,
-        description: "Remove quests above DMs list. Disabled if Questify is enabled.",
+        description: "Remove quests above DMs list.",
         default: false,
         restartNeeded: true,
-        disabled: () => isPluginEnabled("Questify"),
     },
     miscHeader: {
         type: OptionType.COMPONENT,
@@ -88,25 +86,25 @@ export const settings = definePluginSettings({
     },
     removeServerBoostInfo: {
         type: OptionType.BOOLEAN,
-        description: "Remove server boost info above channel list",
+        description: "Remove server boost info above channel list.",
         default: true,
         restartNeeded: true,
     },
     removeBillingSettings: {
         type: OptionType.BOOLEAN,
-        description: "Remove billing settings",
+        description: "Remove billing settings.",
         default: true,
         restartNeeded: true,
     },
     removeGiftButton: {
         type: OptionType.BOOLEAN,
-        description: "Remove gift button",
+        description: "Remove gift button.",
         default: true,
         restartNeeded: true,
     },
     removeUnavailableEmojiPicker: {
         type: OptionType.BOOLEAN,
-        description: "Remove unavailable categories from the emoji picker",
+        description: "Remove unavailable categories from the emoji picker.",
         default: true,
         restartNeeded: true,
     },
