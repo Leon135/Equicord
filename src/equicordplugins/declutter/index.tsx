@@ -127,7 +127,7 @@ function SectionSeparator(title: string) {
     return (
         <>
             <hr style={{ width: "100%" }} />
-            <HeadingSecondary style={{ color: "white" }}>{title}</HeadingSecondary>
+            <HeadingSecondary>{title}</HeadingSecondary>
             <hr style={{ width: "100%" }} />
         </>
     );
