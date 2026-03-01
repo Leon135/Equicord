@@ -5,7 +5,7 @@
  */
 
 import { isPluginEnabled } from "@api/PluginManager";
-import cleanify from "@equicordplugins/cleanify";
+import declutter from "@equicordplugins/declutter";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findCssClassesLazy } from "@webpack";
@@ -43,6 +43,6 @@ export default definePlugin({
     },
 
     shouldHideTooltips() {
-        return isPluginEnabled(cleanify.name) && cleanify.settings.store.removeButtonTooltips;
+        return isPluginEnabled(declutter.name) && declutter.settings.store.removeButtonTooltips;
     }
 });

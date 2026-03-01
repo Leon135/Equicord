@@ -4,13 +4,16 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { showNotification } from "@api/Notifications";
+import { isPluginEnabled } from "@api/PluginManager";
 import { definePluginSettings, migratePluginSetting, migratePluginSettings } from "@api/Settings";
 import { Devs, EquicordDevs } from "@utils/index";
 import definePlugin, { OptionType } from "@utils/types";
+import { SettingsRouter } from "@webpack/common/utils";
 
-migratePluginSettings("Cleanify", "BetterUserArea");
+migratePluginSettings("Declutter", "BetterUserArea");
 
-migratePluginSettings("Cleanify", "Anammox");
+migratePluginSettings("Declutter", "Anammox");
 
 const migrationsAnammox = [
   ["dms", "removeShopAboveDM"],
@@ -24,6 +27,13 @@ const migrationsAnammox = [
 for (const [oldKey, newKey] of migrationsAnammox) {
   migratePluginSetting("Anammox", oldKey, newKey);
 }
+
+const removeQuestsError = {
+  title: "Declutter",
+  body: "Quests above DMs list cannot be removed while Questify is enabled. Please disable Questify to use this option.",
+  color: "var(--red-500)",
+  onclick: () => SettingsRouter.openUserSettings("equicord_plugins")
+};
 
 export const settings = definePluginSettings({
   userProfileHeader: {
@@ -78,7 +88,14 @@ export const settings = definePluginSettings({
   },
   removeQuestsAboveDM: {
     type: OptionType.BOOLEAN,
-    description: "Remove quests above DMs list",
+    description: "Remove quests above DMs list. Disabled if Questify is enabled.",
+    disabled: () => isPluginEnabled("Questify"),
+    onChange(value) {
+      if (value && isPluginEnabled("Questify")) {
+        showNotification(removeQuestsError);
+        settings.store.removeQuestsAboveDM = false;
+      }
+    },
     default: false,
     restartNeeded: true,
   },
@@ -124,19 +141,19 @@ export const settings = definePluginSettings({
   },
 });
 
-function SectionSeparator(title: string){
+function SectionSeparator(title: string) {
   return (
     <>
-      <hr style={{ width: "100%" }}/>
+      <hr style={{ width: "100%" }} />
       <h3 style={{ color: "white" }}>{title}</h3>
-      <hr style={{ width: "100%" }}/>
+      <hr style={{ width: "100%" }} />
     </>
   );
 }
 
 export default definePlugin({
-  name: "Cleanify",
-  description: "Clean up discord ui from all the garbage you don't care about or don't like.",
+  name: "Declutter",
+  description: "Declutter discord ui by removing unwanted elements such as profile customizations, shops, quests and more.",
   authors: [EquicordDevs.Leon135, Devs.prism, Devs.Kyuuhachi],
   settings,
   patches: [
@@ -331,5 +348,11 @@ export default definePlugin({
       },
       predicate: () => settings.store.removeUnavailableEmojiPicker,
     }
-  ]
+  ],
+  start() {
+    if (settings.store.removeQuestsAboveDM && isPluginEnabled("Questify")) {
+      showNotification(removeQuestsError);
+      settings.store.removeQuestsAboveDM = false;
+    }
+  }
 });
