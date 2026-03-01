@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { showNotification } from "@api/Notifications";
 import { isPluginEnabled } from "@api/PluginManager";
 import { definePluginSettings, migratePluginSetting, migratePluginSettings } from "@api/Settings";
 import { Devs, EquicordDevs } from "@utils/index";
 import definePlugin, { OptionType } from "@utils/types";
-import { SettingsRouter } from "@webpack/common/utils";
 
 migratePluginSettings("Declutter", "BetterUserArea", "Anammox");
 
@@ -25,13 +23,6 @@ const migrationsAnammox = [
 for (const [oldKey, newKey] of migrationsAnammox) {
     migratePluginSetting("Anammox", newKey, oldKey);
 }
-
-const removeQuestsError = {
-    title: "Declutter",
-    body: "Quests above DMs list cannot be removed while Questify is enabled. Please disable Questify to use this option.",
-    color: "var(--red-500)",
-    onclick: () => SettingsRouter.openUserSettings("equicord_plugins_panel")
-};
 
 export const settings = definePluginSettings({
     userProfileHeader: {
@@ -341,10 +332,4 @@ export default definePlugin({
             predicate: () => settings.store.removeUnavailableEmojiPicker,
         }
     ],
-    start() {
-        if (settings.store.removeQuestsAboveDM && isPluginEnabled("Questify")) {
-            showNotification(removeQuestsError);
-            settings.store.removeQuestsAboveDM = false;
-        }
-    }
 });
