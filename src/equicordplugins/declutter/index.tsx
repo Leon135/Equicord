@@ -5,6 +5,7 @@
  */
 
 import { definePluginSettings, migratePluginSetting, migratePluginSettings } from "@api/Settings";
+import { HeadingSecondary } from "@components/Heading";
 import { Devs, EquicordDevs } from "@utils/index";
 import definePlugin, { OptionType } from "@utils/types";
 
@@ -126,7 +127,7 @@ function SectionSeparator(title: string) {
     return (
         <>
             <hr style={{ width: "100%" }} />
-            <h3 style={{ color: "white" }}>{title}</h3>
+            <HeadingSecondary style={{ color: "white" }}>{title}</HeadingSecondary>
             <hr style={{ width: "100%" }} />
         </>
     );
